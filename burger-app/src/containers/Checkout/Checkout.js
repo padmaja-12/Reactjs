@@ -6,8 +6,8 @@ import ContactData from './ContactData/ContactData';
 
 class Checkout extends Component {
 
-    componentDidMount () {
-       this.props.onInitPurchase();
+    componentWillMount () {
+      //this.props.onInitPurchase();
     }
 
 
@@ -23,7 +23,7 @@ class Checkout extends Component {
             let summary = <Redirect to = "/"/>
             
             if(this.props.ings) {
-                const purchasedRedirect = this.props.purchased ? <Redirect to = "/" /> : null;
+                const purchasedRedirect = (this.props.purchased) ? <Redirect to = "/" /> : null;
                 summary = (
                     <div>  
                            {purchasedRedirect}       
@@ -45,7 +45,7 @@ class Checkout extends Component {
 const mapStateToProps = state => {
     return {
         ings : state.burgerBuilder.ingredients,
-        purchased : state.burgerBuilder.purchased
+        purchased : state.order.purchased
     };
 };
 
