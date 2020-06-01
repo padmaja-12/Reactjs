@@ -1,7 +1,7 @@
 import React , { Component } from 'react';
 import Input from '../../components/UI/Input/Input';
 import {connect} from 'react-redux';
-
+import { Redirect } from 'react-router-dom';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import Button from '../../components/UI/Button/Button';
 import classes from './Auth.module.css';
@@ -127,14 +127,19 @@ class Auth extends Component {
             <p>{this.props.error.message}</p>
             );
         }
-        
+        let authRedirect = null;
+        if(this.props.isAuthenticated)
+        {
+            authRedirect = <Redirect to="/"/>
+        }
         return (
             <div className = {classes.Auth}>
+                {authRedirect}
                 {errorMessage}
                 <form onSubmit={this.submitHandler}>
                     {form}
+                    <Button btnType="Success">SUBMIT</Button>
                 </form>
-                <Button btnType="Success">SUBMIT</Button>
                 <Button 
                 clicked = {this.switchAuthModeHandler}
                 btnType="Danger">SWITCH TO {this.state.isSignup ? 'SIGNIN' : 'SIGNUP'}</Button>
@@ -145,7 +150,8 @@ class Auth extends Component {
 const mapStateToProps = state => {
     return {
         loading : state.auth.loading,
-        error : state.auth.error
+        error : state.auth.error,
+        isAuthenticated : state.auth.token !== null
     };
 };
 const mapDispatchToProps = dispatch => {
